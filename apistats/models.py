@@ -37,6 +37,7 @@ class APIStatManager(models.Manager):
         apistat.ip = request.headers.get('X-Real-IP', request.META.get('REMOTE_ADDR'))
         apistat.user = request.user if request.user.is_authenticated else None
         apistat.save()
+        return apistat
 
     def _get_domain(self, path: str) -> str:
         """
