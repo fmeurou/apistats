@@ -24,6 +24,18 @@ class APIStatsTestCase(TestCase):
         self.assertEqual(apistat.delay, 100)
         self.assertEqual(apistat.status, 200)
 
+    def test_create_without_user(self):
+        request = self.factory.get('/test/a/path/')
+        delay = 100
+        status = 200
+        apistat = APIStat.objects.create_from_request(request=request, delay=delay, status=status)
+        self.assertIsNotNone(apistat)
+        self.assertEqual(apistat.domain, 'test')
+        self.assertEqual(apistat.path, '/test/a/path/')
+        self.assertIsNone(apistat.user)
+        self.assertEqual(apistat.delay, 100)
+        self.assertEqual(apistat.status, 200)
+
     def test_create_with_user(self):
         request = self.factory.get('/test/a/path/')
         request.user = self.user

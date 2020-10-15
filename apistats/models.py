@@ -35,7 +35,7 @@ class APIStatManager(models.Manager):
         apistat.delay = delay
         apistat.status = status
         apistat.ip = request.headers.get('X-Real-IP', request.META.get('REMOTE_ADDR'))
-        apistat.user = request.user if request.user.is_authenticated else None
+        apistat.user = request.user if hasattr(request, 'user') and request.user.is_authenticated else None
         apistat.save()
         return apistat
 
